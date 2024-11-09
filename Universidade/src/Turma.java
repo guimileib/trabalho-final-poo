@@ -22,6 +22,20 @@ public class Turma {
         return disciplina;
     }
 
+    //Criando set's com tratamento para possíveis erros
+    public void setSemestre(int semestre){
+        // limite de semesre e semestres positivos
+
+    }   
+
+    public void setAnoTurma(int anoTurma){
+        // limite de ano e ano potivo
+        if(anoTurma < 0){
+            
+        }
+    }
+
+
     public void imprimirInfoTurmas(){
         System.out.println("Disciplinas: " + disciplina.getNomeDisciplina() + " | " + "Semestre: " + semestre + " | "
         + "Ano Turma: " + anoTurma);

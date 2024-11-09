@@ -14,6 +14,9 @@ public class Disciplina {
     }
 
     public void adicionarTurma(Turma turma){
+        if(turmas == null){
+            turmas =  new ArrayList<>();
+        }
         turmas.add(turma);
     }
 
