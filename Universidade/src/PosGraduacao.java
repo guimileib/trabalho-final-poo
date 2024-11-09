@@ -8,4 +8,9 @@ public class PosGraduacao extends Estudante {
         this.temaPesquisa = temaPesquisa;
     }
 
+    @Override
+    public String getDetalhes(){
+        return "Estudante Pós-Graduação: " + getNome() + ", Tema de Pesquisa: " + temaPesquisa;
+    }
+
 }

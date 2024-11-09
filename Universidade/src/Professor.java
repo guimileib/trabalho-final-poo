@@ -15,4 +15,6 @@ public class Professor {
         this.inicioContrato = inicioContrato;
         this.departamentoVinculado = departamentoVinculado;
     }
+
+    
 }

@@ -7,4 +7,10 @@ public class Graduacao extends Estudante{
         super(cpf, nome, dataNascimento, cra);
         this.estagioSupervisionado = estagioSupervisionado;
     }
+    
+    @Override
+    public String getDetalhes(){
+        return "Estudante Graduação: " + getNome() + ", Estágio Supervisionado" + estagioSupervisionado; 
+    }
+
 }   
