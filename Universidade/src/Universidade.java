@@ -7,7 +7,8 @@ import java.util.Scanner;
 public class Universidade {
     private static ArrayList<Estudante> estudantes = new ArrayList();
     private static ArrayList<Professor> professores = new ArrayList();
-    private static LocalDate dataNascimentoEstudante;
+    private static ArrayList<Turma> turmas = new ArrayList();
+    private static ArrayList<Disciplina> disciplinas = new ArrayList();
         public static void main(String[] args) {
             //Disciplina poo = new Disciplina("FACOM101", "Programação Orientada a Objetos", 64);
             //Disciplina sd = new Disciplina("FACOM102", "Sistemas Digitais", 64);
@@ -30,6 +31,10 @@ public class Universidade {
                     break;
                 case 2:
                     verInformacoes();
+                    break;
+                case 3:
+                    System.out.println("Você saiu do menu.");
+                    opcao = 0;
                     break;
                 default:
                     System.err.println("Opção inválida, tente novamente.");
@@ -85,13 +90,12 @@ public class Universidade {
                     }
 
                     novoProfessor = new Professor(cpf, nome, dataNascimento, inicioContrato, departamentoVinculado);  
-                    
+                    // Adcionando cada professor ao array
                     if (novoProfessor != null) {
+                        professores.add(novoProfessor);
                         System.out.println("Professor cadastrado com sucesso!");
                     } 
-
                     break;
-                    
                 case 2:
                     System.out.println("------------ Menu Cadastro Estudante ------------ ");
                     System.out.print("Digite o nome do Estudante: ");
@@ -131,18 +135,19 @@ public class Universidade {
                         System.out.println("Tipo de estudante inválido, por favor, tente novamente.");
                         break;
                     }
+                    // Adcionando cada estudante ao array
                     if(novoEstudante != null){
+                        estudantes.add(novoEstudante);
                         System.out.println("Estudante cadastrado com sucesso!");
                     }
                     break;
-                
                 case 3:
                     Disciplina novaDisciplina = null;
                     Turma novaTurma = null;
                     System.out.println("------------ Menu Cadastro Disciplina ------------ ");
                     System.out.print("Digite o código da disciplina: ");
                     String codigo = s.nextLine();
-                    System.out.print("Digite o nome da disciplina:");
+                    System.out.print("Digite o nome da disciplina: ");
                     String nomeDisciplina = s.nextLine();
                     System.out.print("Digite a carga horária dessa disciplina: ");
                     double cargaHoraria = s.nextDouble();
@@ -151,10 +156,10 @@ public class Universidade {
                     System.out.println("Disciplina cadastrada com sucesso!");
                     
                     // Cadastro turma associada
-                    System.out.println("\nDeseja cadastrar uma turma para essa disciplina? (s/n)");
+                    System.out.print("\nDeseja cadastrar uma turma para essa disciplina? (s/n): ");
                     String resposta = s.nextLine();
 
-                    if(resposta.equals("s")){
+                    if(resposta.equalsIgnoreCase("s")){
                         System.out.println("------------ Cadastro Turma ------------ ");
                         System.out.print("Digite o semestre da turma");
                         int semestre = s.nextInt();
@@ -166,55 +171,58 @@ public class Universidade {
                     }else{
                         System.out.println("A disciplina foi cadastrada sem turmas associadas a ela.");
                     }
-                    break;
+                    if(novaTurma != null){
+                        turmas.add(novaTurma);
+                    }
 
+                    break;
                 default:
                     System.out.println("Opção inválida, tente novamente.");
-                
             }
-    }
+            }
 
-    public static void verInformacoes(){
-        Scanner s = new Scanner(System.in);
-        System.out.println("------------ Menu Informações Universidade ------------");
-        System.out.println("1. Ver informações dos Professores.");
-        System.out.println("2. Ver informacões de todos Estudantes.");
-        System.out.println("3. Ver informações de Estudantes Graduação.");
-        System.out.println("4. Ver informações dos Estudantes de Pós-Graduação.");
-        System.out.println("5. Ver informações da Turma.");
-        System.out.println("6. Ver informações das Disciplinas.");
-        System.out.print("\nDigite sua opção: ");
-        int informacao = s.nextInt();
+            public static void verInformacoes(){
+                Scanner s = new Scanner(System.in);
+                System.out.println("------------ Menu Informações Universidade ------------");
+                System.out.println("1. Ver informações dos Professores.");
+                System.out.println("2. Ver informacões de todos Estudantes.");
+                System.out.println("3. Ver informações de Estudantes Graduação.");
+                System.out.println("4. Ver informações dos Estudantes de Pós-Graduação.");
+                System.out.println("5. Ver informações da Turma.");
+                System.out.println("6. Ver informações das Disciplinas.");
+                System.out.print("\nDigite sua opção: ");
+                int informacao = s.nextInt();
 
-        switch (informacao) {
-            case 1:
-                for(Professor professor : professores){
-                    professor.imprimirInformacoes();
-                }
-                break;
-            case 2:
-                for(Estudante estudante : estudantes){
-                    estudante.imprimirInformacoes();
-                }
-                break;
-            case 3: 
-                for(Estudante estudante : estudantes){
-                    if(estudante instanceof Graduacao){
+                switch (informacao) {
+                case 1:
+                    for(Professor professor : professores){
+                        professor.imprimirInformacoes();
+                    }
+                    break;
+                case 2:
+                    for(Estudante estudante : estudantes){
                         estudante.imprimirInformacoes();
                     }
-                }
-                break;
-            case 4:
-                for(Estudante estudante : estudantes){
-                    if(estudante instanceof PosGraduacao){
-                        estudante.imprimirInformacoes();
+                    break;
+                case 3: 
+                    for(Estudante estudante : estudantes){
+                        if(estudante instanceof Graduacao){
+                            estudante.imprimirInformacoes();
+                        }
                     }
-                }
-                break;
-            default:
-                System.out.println("Opção Inválida, tente outra vez.");
-        }
+                    break;
+                case 4:
+                    for(Estudante estudante : estudantes){
+                        if(estudante instanceof PosGraduacao){
+                            estudante.imprimirInformacoes();
+                        }
+                    }
+                    break;
+                default:
+                    System.out.println("Opção Inválida, tente outra vez.");
 
-    }
+                }
+
+            }
 
 }

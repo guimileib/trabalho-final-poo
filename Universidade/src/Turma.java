@@ -7,7 +7,6 @@ public class Turma {
         this.disciplina = disciplina;
         this.semestre = semestre;
         this.anoTurma = anoTurma;
-        disciplina.adicionarTurma(this);
     }
 
     public int getSemestre() {
