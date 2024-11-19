@@ -30,7 +30,7 @@ abstract class Estudante {
     }
     // Criei uma exceção caso o cpf não for inserido ou conter menos de 11 dígitos
     public void setCpf(String cpf){
-        if(cpf == null || cpf.matches("\\d{11}")){
+        if(cpf == null || !cpf.matches("\\d{11}")){
             throw new VerificacaoCpfException("CPF inválido: deve conter 11 dígitos.");
         }
         this.cpf = cpf;

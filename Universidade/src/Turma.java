@@ -6,7 +6,7 @@ public class Turma {
     public Turma(Disciplina disciplina, int semestre, int anoTurma){
         this.disciplina = disciplina;
         this.semestre = semestre;
-        this.anoTurma = anoTurma;
+        setAnoTurma(anoTurma);
     }
 
     public int getSemestre() {
@@ -23,15 +23,18 @@ public class Turma {
 
     //Criando set's com tratamento para possíveis erros
     public void setSemestre(int semestre){
-        // limite de semesre e semestres positivos
-
+        // limite de semestre e semestres positivos
+        if(semestre < 1){
+            throw new InvalidoTurmaException("O semestre deve ser maior ou igual a 1.");
+        }
     }   
 
     public void setAnoTurma(int anoTurma){
         // limite de ano e ano potivo
-        if(anoTurma < 0){
-            
+        if(anoTurma < 1){
+            throw new InvalidoTurmaException("Ano turma inválido: cadastro é a apartir do primeiro ano. ");
         }
+        this.anoTurma = anoTurma;
     }
 
 

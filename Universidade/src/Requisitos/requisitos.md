@@ -14,12 +14,21 @@ Faça um programa principal que permita realizar o cadastro e consulta de todas 
 
 a. Veja se alguma classe do problema deveria ser abstrata [ok]
 
-b. Defina um método abstrato na classe abstrata. 
+b. Defina um método abstrato na classe abstrata.  [ok]
 
-c. Demonstre o método abstrato sendo chamado por meio de polimorfismo envolvendo as diferentes classes que herdam a classe abstrata 
+c. Demonstre o método abstrato sendo chamado por meio de polimorfismo envolvendo as diferentes classes que herdam a classe abstrata [ok]
 
 7) Exceptions & Interfaces
 
 Implemente pelo menos uma nova exceção e utilize em seu código. [ok]
 
-Crie uma interface e use em pelo menos duas classes não relacionadas.
+Crie uma interface e use em pelo menos duas classes não relacionadas. [ok]
+
+
+8) Collections e Persistência
+
+Use as ED de Collections para armazenamento dos dados
+
+Persista os dados que são usados no programa. Faça uma modificação do seu código inicial para que a inicialização dos dados parte do arquivo, e não mais do código. Deixe alguns arquivos já com dados para facilitar o execução do projeto
+
+Entrega e apresentação final: dias 20 e 21, em horário a ser agendado no Teams

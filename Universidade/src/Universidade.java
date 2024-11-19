@@ -5,14 +5,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Universidade {
+    public static boolean cadastroRealizado = false;
     private static ArrayList<Estudante> estudantes = new ArrayList();
     private static ArrayList<Professor> professores = new ArrayList();
     private static ArrayList<Turma> turmas = new ArrayList();
     private static ArrayList<Disciplina> disciplinas = new ArrayList();
         public static void main(String[] args) {
-            //Disciplina poo = new Disciplina("FACOM101", "Programação Orientada a Objetos", 64);
-            //Disciplina sd = new Disciplina("FACOM102", "Sistemas Digitais", 64);
-    
     
             Scanner s = new Scanner(System.in);
             int opcao = 0;
@@ -48,10 +46,10 @@ public class Universidade {
             int subOpcao = 0;
             Scanner s = new Scanner(System.in);
             System.out.println("------------ Menu Universidade -------------");
-            System.out.println("Qual opção você deseja?");
             System.out.println("1. Cadastrar Professores.");
             System.out.println("2. Cadastrar Estudantes");
             System.out.println("3. Cadastrar Disciplina || Turma");
+            System.out.println("4. Pré-cadastro automático.");
 
             System.out.print("\nDigite sua opção: ");
             subOpcao = s.nextInt();
@@ -64,6 +62,11 @@ public class Universidade {
                     String nome = s.nextLine();
                     System.out.print("Digite o CPF do Professor: ");
                     String cpf = s.nextLine();
+
+                    if(cpfJaCadastrado(cpf)){
+                        System.out.println("Cpf já foi cadastrado no sistema.");
+                    }
+
                     System.out.print("Digite o departamento vinculado: ");
                     String departamentoVinculado = s.nextLine();
 
@@ -102,6 +105,11 @@ public class Universidade {
                     String nomeEstudante = s.nextLine();
                     System.out.print("Digite o CPF do Estudante: ");
                     String cpfEstudante = s.nextLine();
+                    // chamada método para comparar ver se o cpf ja foi cadastrado
+                    if(cpfJaCadastrado(cpfEstudante)){
+                        System.out.println("Cpf já foi cadastrado no sistema");
+                    }
+
                     System.out.print("Digite o CRA do aluno: ");
                     double cra = s.nextDouble();
     
@@ -176,9 +184,13 @@ public class Universidade {
                     }
 
                     break;
+
+                case 4:
+                    realizarPreCadastro();
+                    break;
                 default:
                     System.out.println("Opção inválida, tente novamente.");
-            }
+             }
             }
 
             public static void verInformacoes(){
@@ -225,4 +237,45 @@ public class Universidade {
 
             }
 
+            public static void realizarPreCadastro() {
+                if(cadastroRealizado){
+                    System.out.println("Pré cadastro já foi realizado anteriormente.");
+                }
+                Professor professor1 = new Professor("11111111111", "Carlos Silva", LocalDate.of(1980, 5, 15), LocalDate.of(2010, 3, 1), "Departamento de Matemática");
+                Professor professor2 = new Professor("22222222222", "Ana Oliveira", LocalDate.of(1975, 7, 20), LocalDate.of(2005, 8, 15), "Departamento de Física");
+                professores.add(professor1);
+                professores.add(professor2);
+
+                Estudante estudante1 = new Graduacao("33333333333", "João Souza", LocalDate.of(2002, 9, 10), 8.5, "Estágio em Desenvolvimento");
+                Estudante estudante2 = new PosGraduacao("44444444444", "Maria Costa", LocalDate.of(1998, 4, 5), 9.0, "Pesquisa em IA");
+                
+                estudantes.add(estudante1);
+                estudantes.add(estudante2);
+            
+                Disciplina disciplina1 = new Disciplina("MAT101", "Cálculo I", 60);
+                Disciplina disciplina2 = new Disciplina("FIS202", "Física II", 80);
+                disciplinas.add(disciplina1);
+                disciplinas.add(disciplina2);
+
+                Turma turma1 = new Turma(disciplina1, 1, 2024);
+                Turma turma2 = new Turma(disciplina2, 2, 2024);
+                turmas.add(turma1);
+                turmas.add(turma2);
+                cadastroRealizado = true;
+                System.out.println("Pré-cadastro realizado com sucesso!");
+            }
+            
+            private static boolean cpfJaCadastrado(String cpf) {
+                for (Estudante estudante : estudantes) {
+                    if (estudante.getCpf().equals(cpf)) {
+                        return true; 
+                    }
+                }
+                for (Professor professor : professores) {
+                    if (professor.getCpf().equals(cpf)) {
+                        return true; 
+                    }
+                }
+                return false; 
+            }
 }
