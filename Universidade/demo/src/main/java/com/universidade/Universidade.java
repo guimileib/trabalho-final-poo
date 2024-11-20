@@ -1,17 +1,27 @@
+package com.universidade;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Universidade {
+   
     public static boolean cadastroRealizado = false;
-    private static ArrayList<Estudante> estudantes = new ArrayList();
-    private static ArrayList<Professor> professores = new ArrayList();
-    private static ArrayList<Turma> turmas = new ArrayList();
-    private static ArrayList<Disciplina> disciplinas = new ArrayList();
+    private static List<Estudante> estudantes = new ArrayList<>();
+    private static List<Professor> professores = new ArrayList<>();
+    private static List<Turma> turmas = new ArrayList<>();
+    private static List<Disciplina> disciplinas = new ArrayList<>();
         public static void main(String[] args) {
-    
+            
+            carregarDados();
+
             Scanner s = new Scanner(System.in);
             int opcao = 0;
     
@@ -31,6 +41,7 @@ public class Universidade {
                     verInformacoes();
                     break;
                 case 3:
+                    salvarDados();
                     System.out.println("Você saiu do menu.");
                     opcao = 0;
                     break;
@@ -39,21 +50,25 @@ public class Universidade {
                 }
 
             }while(opcao != 0);
+            
         }
-    
+
+
         // Criei funções para facilitar a visualização dos switch cases
         public static void cadastrar(){
             int subOpcao = 0;
+
             Scanner s = new Scanner(System.in);
             System.out.println("------------ Menu Universidade -------------");
             System.out.println("1. Cadastrar Professores.");
             System.out.println("2. Cadastrar Estudantes");
-            System.out.println("3. Cadastrar Disciplina || Turma");
+            System.out.println("3. Cadastrar Disciplina & Turma");
             System.out.println("4. Pré-cadastro automático.");
+            System.out.println("5. Voltar");
 
             System.out.print("\nDigite sua opção: ");
             subOpcao = s.nextInt();
-            s.nextLine(); // Limpando o buffer
+            s.nextLine(); 
     
             switch (subOpcao) {
                 case 1:
@@ -96,9 +111,11 @@ public class Universidade {
                     // Adcionando cada professor ao array
                     if (novoProfessor != null) {
                         professores.add(novoProfessor);
+                        salvarDados();
                         System.out.println("Professor cadastrado com sucesso!");
                     } 
                     break;
+
                 case 2:
                     System.out.println("------------ Menu Cadastro Estudante ------------ ");
                     System.out.print("Digite o nome do Estudante: ");
@@ -146,54 +163,74 @@ public class Universidade {
                     // Adcionando cada estudante ao array
                     if(novoEstudante != null){
                         estudantes.add(novoEstudante);
+                        salvarDados();
                         System.out.println("Estudante cadastrado com sucesso!");
                     }
                     break;
                 case 3:
                     Disciplina novaDisciplina = null;
                     Turma novaTurma = null;
+                    System.out.println(" ");
                     System.out.println("------------ Menu Cadastro Disciplina ------------ ");
                     System.out.print("Digite o código da disciplina: ");
                     String codigo = s.nextLine();
+
                     System.out.print("Digite o nome da disciplina: ");
                     String nomeDisciplina = s.nextLine();
+                    
                     System.out.print("Digite a carga horária dessa disciplina: ");
                     double cargaHoraria = s.nextDouble();
-
+                    s.nextLine(); // sem estava bugando o s/n
                     novaDisciplina = new Disciplina(codigo, nomeDisciplina, cargaHoraria);
-                    System.out.println("Disciplina cadastrada com sucesso!");
-                    
-                    // Cadastro turma associada
-                    System.out.print("\nDeseja cadastrar uma turma para essa disciplina? (s/n): ");
-                    String resposta = s.nextLine();
 
-                    if(resposta.equalsIgnoreCase("s")){
-                        System.out.println("------------ Cadastro Turma ------------ ");
-                        System.out.print("Digite o semestre da turma");
-                        int semestre = s.nextInt();
-                        System.out.print("Digite o ano da turma: ");
-                        int anoTurma = s.nextInt();
-                        
-                        novaTurma = new Turma(novaDisciplina, semestre, anoTurma);
-                        System.out.println("Turma cadastrada e associada à disciplina com sucesso!");
-                    }else{
-                        System.out.println("A disciplina foi cadastrada sem turmas associadas a ela.");
+                    while(true){ // vai garantir que tenha uma entrada válida
+                        System.out.print("Deseja cadastrar uma turma para essa disciplina? (s/n): "); // Cadastro turma associada
+                        String resposta = s.nextLine();
+
+                        if(resposta.equalsIgnoreCase("n")){
+                            disciplinas.add(novaDisciplina);
+                            System.out.println("Disciplina cadastrada com sucesso!");
+                            salvarDados();
+                            break;
+
+                        }else if(resposta.equalsIgnoreCase("s")){
+                            System.out.println("------------ Cadastro Turma ------------ ");
+                            System.out.print("Digite o semestre da turma: ");
+                            int semestre = s.nextInt();
+                            s.nextLine();
+
+                            System.out.print("Digite o ano da turma: ");
+                            int anoTurma = s.nextInt();
+                            s.nextLine();
+
+                            novaTurma = new Turma(novaDisciplina, semestre, anoTurma);
+                            turmas.add(novaTurma);
+                            System.out.println("Turma cadastrada e associada à disciplina com sucesso!");
+                            disciplinas.add(novaDisciplina);
+                            salvarDados();
+                            break;
+                            
+                        }else{
+                            System.out.println("Digite uma opção válida: (s ou n). ");
+                        }
+
                     }
-                    if(novaTurma != null){
-                        turmas.add(novaTurma);
-                    }
 
-                    break;
-
+                    break;   
                 case 4:
                     realizarPreCadastro();
                     break;
+
+                case 5:
+                    return;
+
                 default:
                     System.out.println("Opção inválida, tente novamente.");
              }
             }
 
             public static void verInformacoes(){
+                carregarDados();
                 Scanner s = new Scanner(System.in);
                 System.out.println("------------ Menu Informações Universidade ------------");
                 System.out.println("1. Ver informações dos Professores.");
@@ -202,9 +239,11 @@ public class Universidade {
                 System.out.println("4. Ver informações dos Estudantes de Pós-Graduação.");
                 System.out.println("5. Ver informações da Turma.");
                 System.out.println("6. Ver informações das Disciplinas.");
+                System.out.println("7. Voltar.");
                 System.out.print("\nDigite sua opção: ");
                 int informacao = s.nextInt();
-
+                s.nextLine();
+                
                 switch (informacao) {
                 case 1:
                     for(Professor professor : professores){
@@ -230,6 +269,19 @@ public class Universidade {
                         }
                     }
                     break;
+                case 5:
+                    for(Turma turma : turmas){
+                        turma.imprimirInfoTurmas();
+                    }
+                    break;
+                case 6:
+                    for(Disciplina disciplina : disciplinas){
+                        disciplina.imprimirInformacoes();
+                    }
+                    break;
+                case 7:
+
+                    return;
                 default:
                     System.out.println("Opção Inválida, tente outra vez.");
 
@@ -241,13 +293,14 @@ public class Universidade {
                 if(cadastroRealizado){
                     System.out.println("Pré cadastro já foi realizado anteriormente.");
                 }
-                Professor professor1 = new Professor("11111111111", "Carlos Silva", LocalDate.of(1980, 5, 15), LocalDate.of(2010, 3, 1), "Departamento de Matemática");
-                Professor professor2 = new Professor("22222222222", "Ana Oliveira", LocalDate.of(1975, 7, 20), LocalDate.of(2005, 8, 15), "Departamento de Física");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                Professor professor1 = new Professor("11111111111", "Carlos Silva", LocalDate.parse("15/05/1980", formatter), LocalDate.parse("01/03/2010", formatter), "Departamento de Matemática");
+                Professor professor2 = new Professor("22222222222", "Ana Oliveira", LocalDate.parse("20/07/1975", formatter), LocalDate.parse("15/08/2005", formatter), "Departamento de Física");
                 professores.add(professor1);
                 professores.add(professor2);
 
-                Estudante estudante1 = new Graduacao("33333333333", "João Souza", LocalDate.of(2002, 9, 10), 8.5, "Estágio em Desenvolvimento");
-                Estudante estudante2 = new PosGraduacao("44444444444", "Maria Costa", LocalDate.of(1998, 4, 5), 9.0, "Pesquisa em IA");
+                Estudante estudante1 = new Graduacao("33333333333", "João Souza", LocalDate.parse("10/09/2002", formatter), 8.5, "Estágio em Desenvolvimento");
+                Estudante estudante2 = new PosGraduacao("44444444444", "Maria Costa", LocalDate.parse("05/04/1998", formatter), 9.0, "Pesquisa em IA");
                 
                 estudantes.add(estudante1);
                 estudantes.add(estudante2);
@@ -266,6 +319,11 @@ public class Universidade {
             }
             
             private static boolean cpfJaCadastrado(String cpf) {
+                if(estudantes == null || estudantes.isEmpty()){ // verificar se a lista antes de acessar o metodo
+                    System.out.println("Lista de estudantes não carregada corretamente!"); 
+                    return false;
+                }
+
                 for (Estudante estudante : estudantes) {
                     if (estudante.getCpf().equals(cpf)) {
                         return true; 
@@ -278,4 +336,41 @@ public class Universidade {
                 }
                 return false; 
             }
+
+            
+            public static void salvarDados(){
+                String caminhoArquivo =  "G:\\Aulas\\POO\\Trabalho Final\\Universidade\\demo\\src\\main\\resources\\universidade_data.ser";
+                try(FileOutputStream fileOut = new FileOutputStream(caminhoArquivo);
+                    ObjectOutputStream out = new ObjectOutputStream(fileOut) ){
+                    out.writeObject(estudantes);
+                    out.writeObject(professores);
+                    out.writeObject(turmas);
+                    out.writeObject(disciplinas);
+                    out.close();
+                    System.out.println("Dados salvos com sucesso!");
+                } catch (Exception e) {
+                    System.err.println("Erro ao salvar dados: " + e.getMessage());
+                }
+            }
+
+            @SuppressWarnings("unchecked")
+            public static void carregarDados() {
+                String caminhoArquivo =  "G:\\Aulas\\POO\\Trabalho Final\\Universidade\\demo\\src\\main\\resources\\universidade_data.ser";
+                try {
+                    ObjectInputStream ois = new ObjectInputStream(new FileInputStream(caminhoArquivo));
+                    estudantes = (List<Estudante>) ois.readObject();
+                    professores = (List<Professor>) ois.readObject();
+                    turmas = (List<Turma>) ois.readObject();
+                    disciplinas = (List<Disciplina>) ois.readObject();
+                    ois.close();
+                    System.out.println("Dados carregados com sucesso!");
+                } catch (Exception e) {
+                    System.out.println("Nenhum dado salvo encontrado ou erro ao carregar dados. Criando novas listas.");
+                    estudantes = new ArrayList<>();
+                    professores = new ArrayList<>();
+                    turmas = new ArrayList<>();
+                    disciplinas = new ArrayList<>();
+                }
+            }
+
 }

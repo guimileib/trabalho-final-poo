@@ -1,4 +1,8 @@
-public class Disciplina {
+package com.universidade;
+
+import java.io.Serializable;
+
+public class Disciplina implements Serializable{
     private String codigo;
     private String nomeDisciplina;
     private double cargaHoraria;
@@ -25,6 +29,7 @@ public class Disciplina {
 
 
     public void imprimirInformacoes(){
-        System.out.println("Turmas da Disciplina: " + nomeDisciplina);
+        System.out.println("Turmas da Disciplina: " + nomeDisciplina + "| Código da Disiciplina: " + codigo + "| Carga Horária Disciplina: " + cargaHoraria);
+        System.out.println(" ");
     }
 }

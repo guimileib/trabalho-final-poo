@@ -1,4 +1,8 @@
-public class Turma {
+package com.universidade;
+
+import java.io.Serializable;
+
+public class Turma implements Serializable{
     private int semestre;
     private int anoTurma;
     private Disciplina disciplina;
@@ -39,7 +43,7 @@ public class Turma {
 
 
     public void imprimirInfoTurmas(){
-        System.out.println("Disciplinas: " + disciplina.getNomeDisciplina() + " | " + "Semestre: " + semestre + " | "
-        + "Ano Turma: " + anoTurma);
+        System.out.println("Disciplinas: " + disciplina.getNomeDisciplina() + " | " + "Semestre: " + semestre + "| Ano Turma: " + anoTurma);
+        System.out.println(" ");
     }
 }

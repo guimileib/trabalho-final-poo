@@ -1,6 +1,10 @@
+package com.universidade;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Professor {
+public class Professor implements Serializable {
+
     private String cpf;
     private String nome;
     private LocalDate dataNascimento;
@@ -29,11 +33,7 @@ public class Professor {
 
     public void imprimirInformacoes(){
         System.out.println("<< Informações Professor >>");
-        System.out.println("Nome: " + nome);
-        System.out.println("CPF: " + cpf);
-        System.out.println("Data Nascimento: " + dataNascimento);
-        System.out.println("Início Contrato: " + inicioContrato);
-        System.out.println("Departamento vinculado: " + departamentoVinculado);
+        System.out.println("Nome: " + nome + "| CPF: " + cpf + "| Data Nascimento: " + dataNascimento + "| Início Contrato: " + inicioContrato + "| Departamento vinculado: " + departamentoVinculado);
         System.out.println(" ");
     }
 }

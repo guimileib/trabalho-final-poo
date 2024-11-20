@@ -1,6 +1,9 @@
+package com.universidade;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 
-abstract class Estudante {
+abstract class Estudante implements Serializable{
     private String cpf;
     private String nome;
     private LocalDate dataNascimento;
