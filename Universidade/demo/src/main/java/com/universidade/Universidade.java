@@ -62,10 +62,10 @@ public class Universidade {
             Scanner s = new Scanner(System.in);
             System.out.println("------------ Menu Universidade -------------");
             System.out.println("1. Cadastrar Professores.");
-            System.out.println("2. Cadastrar Estudantes");
-            System.out.println("3. Cadastrar Disciplina & Turma");
+            System.out.println("2. Cadastrar Estudantes.");
+            System.out.println("3. Cadastrar Disciplina & Turma.");
             System.out.println("4. Pré-cadastro automático.");
-            System.out.println("5. Voltar");
+            System.out.println("5. Voltar.");
 
             System.out.print("\nDigite sua opção: ");
             subOpcao = s.nextInt();
@@ -167,7 +167,7 @@ public class Universidade {
                         }else{
                             System.out.println("Tipo de estudante inválido, por favor, tente novamente.");  
                         }
-                        
+
                         break;
                     }
                     // Adcionando cada estudante ao array
@@ -329,7 +329,10 @@ public class Universidade {
             }
             
             private static boolean cpfJaCadastrado(String cpf) {
-                if(estudantes == null || estudantes.isEmpty()){ // verificar se a lista antes de acessar o metodo
+                carregarDados();
+
+                if(estudantes == null || estudantes.isEmpty() && 
+                    (professores == null || professores.isEmpty())){ // verificar se a lista antes de acessar o metodo
                     System.out.println("Lista de estudantes não carregada corretamente!"); 
                     return false;
                 }
