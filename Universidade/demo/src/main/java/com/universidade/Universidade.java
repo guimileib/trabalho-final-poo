@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -85,22 +86,21 @@ public class Universidade {
                     System.out.print("Digite o departamento vinculado: ");
                     String departamentoVinculado = s.nextLine();
 
-                    // Formatação do Date time | String <-> DateTime
-                    DateTimeFormatter formatterAniversario  = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    DateTimeFormatter formatterContrato  = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    // Inicializando os objetos, ainda não criados
+                    DateTimeFormatter formataAniversario  = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    DateTimeFormatter formataContrato  = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
                     LocalDate inicioContrato = null;
                     LocalDate dataNascimento = null;
                     Professor novoProfessor = null;
-                    // Formatando e convertendo os tipos Local Date
+
                     try{ 
                         System.out.print("Digite o início do Contrato (formato dd/MM/yyyy): ");
-                        String inicioContratoInput = s.nextLine();
+                        String dataInicioContrato = s.nextLine();
                         System.out.print("Digite a data de nascimento(formato dd/MM/yyyy): ");
-                        String dataInput = s.nextLine();
+                        String data = s.nextLine();
     
-                        dataNascimento = LocalDate.parse(dataInput, formatterAniversario);
-                        inicioContrato = LocalDate.parse(inicioContratoInput, formatterContrato);
+                        dataNascimento = LocalDate.parse(data, formataAniversario);
+                        inicioContrato = LocalDate.parse(dataInicioContrato, formataContrato);
 
                     }catch(DateTimeParseException e){
                         System.err.println("Formato de data inválido.Por favor, use o formato dd/MM/yyyy ");
@@ -108,7 +108,7 @@ public class Universidade {
                     }
 
                     novoProfessor = new Professor(cpf, nome, dataNascimento, inicioContrato, departamentoVinculado);  
-                    // Adcionando cada professor ao array
+
                     if (novoProfessor != null) {
                         professores.add(novoProfessor);
                         salvarDados();
@@ -117,48 +117,55 @@ public class Universidade {
                     break;
 
                 case 2:
+                    double cra = 0;
                     System.out.println("------------ Menu Cadastro Estudante ------------ ");
                     System.out.print("Digite o nome do Estudante: ");
                     String nomeEstudante = s.nextLine();
                     System.out.print("Digite o CPF do Estudante: ");
                     String cpfEstudante = s.nextLine();
+
                     // chamada método para comparar ver se o cpf ja foi cadastrado
-                    if(cpfJaCadastrado(cpfEstudante)){
+                   if(cpfJaCadastrado(cpfEstudante)){
                         System.out.println("Cpf já foi cadastrado no sistema");
+                        break;
                     }
 
                     System.out.print("Digite o CRA do aluno: ");
-                    double cra = s.nextDouble();
+                    cra = s.nextDouble();
+                    s.nextLine();
+
     
-                    DateTimeFormatter formatterNascimento = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Formatação do Date time
+                    DateTimeFormatter formataNascimento = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Formatação do Date time
                     LocalDate dataNascimentoEstudante = null;
                     Estudante novoEstudante = null;
-    
-                    try{ 
-                        System.out.print("Digite a data de nascimento: ");
-                        String dataInput =  s.nextLine();
-                        dataNascimentoEstudante = LocalDate.parse(dataInput, formatterNascimento);
-                        
-                    }catch(DateTimeParseException x){
-                        System.out.println("Formato de data inválido.Por favor, use o formato dd/MM/yyyy ");
+                    while(true){
+                        try{ 
+                            System.out.print("Digite a data de nascimento: ");
+                            String data =  s.nextLine();
+                            dataNascimentoEstudante = LocalDate.parse(data, formataNascimento);
+                            break;
+                        }catch(DateTimeParseException x){
+                            System.out.println("Formato de data inválido.Por favor, use o formato dd/MM/yyyy ");
+                        }
                     }
-                    
-                    System.out.print("Digite o tipo de estudante (graduação/pós-graduação): ");
-                    String tipoEstudante = s.nextLine().toLowerCase();
-                    
-                    if(tipoEstudante.equals("graduação")){
-                        System.out.print("Digite o estágio: ");
-                        String estagioSupervisionado = s.nextLine();
-                        novoEstudante = new PosGraduacao(cpfEstudante, nomeEstudante, dataNascimentoEstudante, cra, estagioSupervisionado);
 
-                    } else if(tipoEstudante.equals("pós-graduação")){
-                        System.out.print("Digite o tema da Pesquisa: ");
-                        String temaPesquisa = s.nextLine();
-                        novoEstudante = new PosGraduacao(cpfEstudante, nomeEstudante, dataNascimentoEstudante, cra, temaPesquisa);
-
-                    }else{
-                        System.out.println("Tipo de estudante inválido, por favor, tente novamente.");
-                        break;
+                    while(true){
+                        System.out.print("Digite o tipo de estudante (graduação/pós-graduação): ");
+                        String tipoEstudante = s.nextLine();
+                    
+                        if(tipoEstudante.equalsIgnoreCase("graduação")){
+                            System.out.print("Digite o estágio: ");
+                            String estagioSupervisionado = s.nextLine();
+                            novoEstudante = new Graduacao(cpfEstudante, nomeEstudante, dataNascimentoEstudante, cra, estagioSupervisionado);
+                            break;
+                        } else if(tipoEstudante.equalsIgnoreCase("pós-graduação")){
+                            System.out.print("Digite o tema da Pesquisa: ");
+                            String temaPesquisa = s.nextLine();
+                            novoEstudante = new PosGraduacao(cpfEstudante, nomeEstudante, dataNascimentoEstudante, cra, temaPesquisa);
+                            break;
+                        }else{
+                            System.out.println("Tipo de estudante inválido, por favor, tente novamente.");  
+                        }
                     }
                     // Adcionando cada estudante ao array
                     if(novoEstudante != null){
