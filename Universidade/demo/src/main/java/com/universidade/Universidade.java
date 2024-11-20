@@ -150,22 +150,25 @@ public class Universidade {
                     }
 
                     while(true){
-                        System.out.print("Digite o tipo de estudante (graduação/pós-graduação): ");
-                        String tipoEstudante = s.nextLine();
+                        System.out.print("Digite o tipo de estudante (1 = graduação | 2 = pós-graduação): ");
+                        Integer tipoEstudante = s.nextInt();
+                        s.nextLine();
                     
-                        if(tipoEstudante.equalsIgnoreCase("graduação")){
+                        if(tipoEstudante.equals(1)){
                             System.out.print("Digite o estágio: ");
                             String estagioSupervisionado = s.nextLine();
                             novoEstudante = new Graduacao(cpfEstudante, nomeEstudante, dataNascimentoEstudante, cra, estagioSupervisionado);
-                            break;
-                        } else if(tipoEstudante.equalsIgnoreCase("pós-graduação")){
+                            
+                        } else if(tipoEstudante.equals(2)){
                             System.out.print("Digite o tema da Pesquisa: ");
                             String temaPesquisa = s.nextLine();
                             novoEstudante = new PosGraduacao(cpfEstudante, nomeEstudante, dataNascimentoEstudante, cra, temaPesquisa);
-                            break;
+                            
                         }else{
                             System.out.println("Tipo de estudante inválido, por favor, tente novamente.");  
                         }
+                        
+                        break;
                     }
                     // Adcionando cada estudante ao array
                     if(novoEstudante != null){
