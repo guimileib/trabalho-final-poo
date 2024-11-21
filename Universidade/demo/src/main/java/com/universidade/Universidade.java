@@ -79,10 +79,12 @@ public class Universidade {
                     System.out.print("Digite o CPF do Professor: ");
                     String cpf = s.nextLine();
 
-                    if(cpfJaCadastrado(cpf)){
-                        System.out.println("Cpf já foi cadastrado no sistema.");
+                    while(cpfJaCadastrado(cpf)){
+                        System.out.println("Erro: Insira um CPF diferente.");
+                        System.out.print("Digite o CPF do Professor: ");
+                        cpf = s.nextLine();
+                        
                     }
-
                     System.out.print("Digite o departamento vinculado: ");
                     String departamentoVinculado = s.nextLine();
 
@@ -118,16 +120,18 @@ public class Universidade {
 
                 case 2:
                     double cra = 0;
+                    String cpfEstudante = null;
                     System.out.println("------------ Menu Cadastro Estudante ------------ ");
                     System.out.print("Digite o nome do Estudante: ");
                     String nomeEstudante = s.nextLine();
                     System.out.print("Digite o CPF do Estudante: ");
-                    String cpfEstudante = s.nextLine();
+                    cpfEstudante = s.nextLine();
 
-                    // chamada método para comparar ver se o cpf ja foi cadastrado
-                   if(cpfJaCadastrado(cpfEstudante)){
-                        System.out.println("Cpf já foi cadastrado no sistema");
-                        break;
+                    while(cpfJaCadastrado(cpfEstudante)){
+                        System.out.println("Erro: Insira um CPF diferente.");
+                        System.out.print("Digite o CPF do Estudante: ");
+                        cpfEstudante = s.nextLine();
+                        
                     }
 
                     System.out.print("Digite o CRA do aluno: ");
@@ -290,7 +294,6 @@ public class Universidade {
                     }
                     break;
                 case 7:
-
                     return;
                 default:
                     System.out.println("Opção Inválida, tente outra vez.");
@@ -376,7 +379,6 @@ public class Universidade {
                     turmas = (List<Turma>) ois.readObject();
                     disciplinas = (List<Disciplina>) ois.readObject();
                     ois.close();
-                    System.out.println("Dados carregados com sucesso!");
                 } catch (Exception e) {
                     System.out.println("Nenhum dado salvo encontrado ou erro ao carregar dados. Criando novas listas.");
                     estudantes = new ArrayList<>();
